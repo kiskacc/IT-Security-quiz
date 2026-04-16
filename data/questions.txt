@@ -13,3 +13,33 @@ Mi a különbség az üzenethitelesítő kód (MAC) és a digitális aláírás 
 Az üzenethitelesítés azt jelenti, hogy az üzenet fogadója ...|meg tud arról győződni, hogy az üzenet az átvitel során nem módosult|megbízhatóan meg tudja állapítani, hogy ki az üzenet küldője|b
 A hibrid rejtjelezés azt jelenti, hogy ...|egyszerre hasznáéunk egy szimmetrikus és egy aszimmetrikus kulcsú rejtjelezőt a hatékonyság érdekében|egyszerre használunk egy kulcsfolyam rejtjelezőt és egy blokkrejtjelezőt a nagyobb biztonság érdekében|a
 Melyik kulcskezelési módszer biztonságosabb?|A kulcsot titkosítva tároljuk egy fájlban, és csak amikor használni akarjuk valamilyen kriptográfiai műveletre, akkor dekódoljuk a fájlt és olvassuk ki belőle a kulcsot|A kulcsot bontás ellenálló hardver modulban (pl. chip-kártya) tároljuk nyílt formában, de a modulból a kulcsot sosem olvassuk ki, inkább a modulban végzünk minden kriptográfiai műveletet a kulccsal|b
+Az open design tervezési elv lényege, hogy ...|a rendszer terveit minden esetben érdemes nyilvánosságra hozni, mert így érhető el a leggyorsabban, hogy az esetleges hibák kiderüljenek|a rendszer biztonságát ne a rendszer komplexitása adja, hanem csak a beépített biztonsági mechanizmusok|b
+A Threat, Risk, Vulnerability analysis célja, ...|hogy rendszerezetten felsorolja a rendszerünket fenyegető támadókat|hogy dokumentálja a biztonsági mechanizmusok beépítésének az indokait|b
+Hogyan kell kezelni egy sérült bemeneti adatot?|El kell utasítani és naplózni kell az eseményt|Meg kell próbálni automatikusan javítani|a
+Mit mond a pszichológiai elfogadhatóság elve?|A felhasználóknak el kell fogadni, hogy rá vannak kényszerítve az erősebb biztonsági mechanizmusokra (pl 2FA)|A biztonsági mechanizmusok ne terheljék túl a felhasznállót|b
+Mi a statikus elemzés egyik hátránya?|Nincs futásidejű információ|Nem talál ismert sérülékenységeket|a
+Melyik memóriaelem felülírása vezethet vezérlésátvételhez?|Egy lokális változó kezdeti értéke|A visszatérési cím|b
+TOCTOU sebezhetőség akkor keletkezik, ha ...|Az ellenőrzés hibás logikai feltételt használ|Az ellenőrzés és a használat között megváltozik az erőforrás állapota|b
+Mi az ASLR védelem alapötlete?|A memóriában tárolt adatok titkosítása futás közben|A különböző memóriaszegmensek címeinek véletlenszerű eltolása minden futtatáskor|b
+Buffer overflow (puffer túlcsordulás) kihasználása során...|általában a sérülékeny program összeomlik, mivel például a Linux operációs rendszer egy szegmentációs hibával leállíthatja a támadás hatására a végrehajtást|a támadó célja, hogy a sérülékenység kihasználása után mindenképp tovább fusson a program, hogy ne legyen nyoma a támadásnak|a
+DEP bekapcsolása esetén mi nem lehetséges?|A stacken tárolt shellcode közvetlen futtatása|A stacken tárolt adatok módosítása|a
+Miből áll az origin a kliens oldali biztonsági modellben?|Sémából, domainből és portból áll|Security header, protokoll és URL-ből áll|a
+Mi a komment karakterek szerepe SQL injection támadás során?|Segítségükkel a támadó jogosultságot szerez kódfuttatásra az adatbázisban|Segítségükkel az eredeti SQL lekérdezés egyes részei "kikapcsolhatók"|b
+Mit jelent a Cross-Site Scripting (XSS) támadás?|A támadó képes elérni, hogy a saját JavaScript kódja futási jogosultságot érjen el|A támadó JavaScript kódot futtat egy másik origin kontextusában|b
+Milyen szerepe van a Content Security Policy-nek XSS ellen?|Teljes mértékben meggátolja a kódfuttatást egy XSS támadás esetán|Csökkentheti az XSS támadások hatását|b
+Az allábiak közül az URL mely részét dolgozza fel a szerver oldali komponens?|A használt protokoll metódust|A fragmens azonosítót|a
+A smart kártyák biztonságosabbak, mint a proxy kártyák, mert nem lehet őket triviálisan másolni|Hamis|Igaz|b
+Mandatory Access Control esetében az adminisztrátor definiálja a szabályokat, amik kötelezően mindenkire vontakoznak|Hamis|Igaz|b
+Az autentikáció célja, hogy meghatározza, melyik felhasználónak milyen jogosultságai vannak|Hamis|Igaz|a
+Az Access Control listák minden objecthez definiálják, ki mit csinálhat vele|Hamis|Igaz|b
+Ha egy webalkalmazást implementálunk, a jelszavakat mindig titkosítva kell tárolni az adatbázisban|Igaz|Hamis|b
+A SAST-eszközök hamis pozitív riasztásokat generálhatnak, mert...|...lehet, hogy nem rendelkeznek a külső függőségekre vonatkozó ismeretekkel|...csak azokat a sérülékenységeket észlelik, amelyeket a vizsgálat során aktívan kihasználnak|a
+A biztonsági tesztelés keretében alkalmazott statikus programelemzési technikák előnye, hogy...|...már a fejlesztési folyamat korai szakaszában alkalmazhatók|...olyan sérülékenységeket tudnak azonosítani, amelyek csak meghatározott futási körülmények között jelentkeznek|a
+A biztonsági tesztelés célja...|...a sérülékenységek feltárása és a biztonsági funkciók megfelelő működésének biztosítása|...annak garantálása, hogy a rendszer teljesen védett legyen minden jövőbeli kibertámadással szemben|a
+A biztonsági tesztelés keretében végzett dinamikus programelemzésnek az a hátránya, hogy...|...alacsony a kódlefedettség|...mindig hozzáférést igényel az eredeti forráskódhoz és a fordítási környezethez|a
+A fuzzing alapötlete az, hogy...|...véletlenszerűen generált bemeneti adatokkal tesztelje a szoftvert|...átolvassa a forráskód utasításait|a
+A malware olyan kód, amely...|...szándékosan kárt okozhat egy informatikai rendszerben|...csak e-mail mellékleteként képes terjedni|a
+Célzott támadások esetében a támadók arra használják a rosszindulatú szoftvereket, hogy...|kémkedjenek|...nagy mennyiségű kéretlen levelet küldjenek|a
+Egy vírus gazdateste lehet...|...egy tűzfal|...egy képfájl|b
+Időzített bombát általában az alábbi típusú rosszindulatú szoftver implementál:|trójai|féreg|a
+A rosszindulatú szoftverek témakörében a szignatúra...|...olyan tanúsítvány, amelyet a rosszindulatú szoftverek használnak, hogy legitim szoftvernek tettessék magukat|...egyfajta egyedi azonosító ismert rosszindulatú szoftver felismeréséhez|b
