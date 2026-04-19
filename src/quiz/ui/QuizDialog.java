@@ -24,6 +24,11 @@ public class QuizDialog extends JDialog {
     private final JRadioButton bBtn = new JRadioButton();
     private final ButtonGroup group = new ButtonGroup();
 
+    private final JButton checkBtn = new JButton("Válasz ellenőrzése");
+    private final JButton nextBtn = new JButton("Következő");
+
+    private boolean answered = false;
+
     private final long startMs;
     private final LocalDateTime startedAt;
 
@@ -60,7 +65,47 @@ public class QuizDialog extends JDialog {
         aBtn.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
         bBtn.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 
-        JButton nextBtn = new JButton("Következő");
+        
+        checkBtn.setEnabled(true);
+        nextBtn.setEnabled(false);
+
+        aBtn.addActionListener(e -> {
+            if (answered) {
+                aBtn.setSelected(false);
+            }
+        });
+
+        bBtn.addActionListener(e -> {
+            if (answered) {
+                bBtn.setSelected(false);
+            }
+        });
+
+        checkBtn.addActionListener(e -> {
+            if (!aBtn.isSelected() && !bBtn.isSelected()) {
+                JOptionPane.showMessageDialog(this, "Válassz A-t vagy B-t!");
+                return;
+            }
+
+            Question q = picked.get(index);
+            Option chosen = aBtn.isSelected() ? Option.A : Option.B;
+
+            // lock
+            lockAnswers();
+
+            answered = true;
+
+            if (chosen == q.getCorrectOption()) {
+                correct++;
+                markCorrect(chosen);
+            } else {
+                markWrong(chosen, q.getCorrectOption());
+            }
+
+            checkBtn.setEnabled(false);
+            nextBtn.setEnabled(true);
+        });
+        
         nextBtn.addActionListener(e -> {
             if (!aBtn.isSelected() && !bBtn.isSelected()) {
                 JOptionPane.showMessageDialog(this, "Válassz A-t vagy B-t!");
@@ -69,7 +114,8 @@ public class QuizDialog extends JDialog {
 
             Question q = picked.get(index);
             Option chosen = aBtn.isSelected() ? Option.A : Option.B;
-            if (chosen == q.getCorrectOption()) correct++;
+            if (!answered)
+                if (chosen == q.getCorrectOption()) correct++;
 
             index++;
             if (index >= picked.size()) {
@@ -122,6 +168,7 @@ public class QuizDialog extends JDialog {
 
         // Bottom: next button
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottom.add(checkBtn);
         bottom.add(nextBtn);
         root.add(bottom, BorderLayout.SOUTH);
 
@@ -139,6 +186,18 @@ public class QuizDialog extends JDialog {
         bBtn.setText(wrapHtml("B) " + q.getOptions().get(1)));
 
         group.clearSelection();
+        
+        answered = false;
+
+        aBtn.setEnabled(true);
+        bBtn.setEnabled(true);
+
+        checkBtn.setEnabled(true);
+        nextBtn.setEnabled(true);
+    }
+    
+    private void lockAnswers() {
+        answered = true;
     }
 
     private String wrapHtmlQuestion(String text) {
@@ -150,12 +209,45 @@ public class QuizDialog extends JDialog {
         return "<html><table width='" + Q_WRAP_WIDTH_PX + "'><tr><td>" + esc + "</td></tr></table></html>";
     }
 
-    private String wrapHtml(String text) {
-        String esc = text
-                .replace("&", "&amp;")
-                .replace("<", "&lt;")
-                .replace(">", "&gt;");
-
-        return "<html><body style='width:" + WRAP_WIDTH_PX + "px'>" + esc + "</body></html>";
+    private void markCorrect(Option chosen) {
+        if (chosen == Option.A) {
+            aBtn.setText(wrapHtml("<span style='color:green'>✔</span> A) " + getRawOptionText(aBtn)));
+        } else {
+            bBtn.setText(wrapHtml("<span style='color:green'>✔</span> B) " + getRawOptionText(bBtn)));
+        }
     }
+
+    private void markWrong(Option chosen, Option correctOpt) {
+        if (chosen == Option.A) {
+            aBtn.setText(wrapHtml("<span style='color:red'>✘</span> A) " + getRawOptionText(aBtn)));
+        } else {
+            bBtn.setText(wrapHtml("<span style='color:red'>✘</span> B) " + getRawOptionText(bBtn)));
+        }
+
+        // jelöljük a helyeset is
+        if (correctOpt == Option.A && chosen != Option.A) {
+            aBtn.setText(wrapHtml("<span style='color:green'>✔</span> A) " + getRawOptionText(aBtn)));
+        } else {
+            bBtn.setText(wrapHtml("<span style='color:green'>✔</span> B) " + getRawOptionText(bBtn)));
+        }
+    }
+
+    private String getRawOptionText(JRadioButton btn) {
+        String text = btn.getText();
+
+        // remove HTML + prefixek
+        return text.replaceAll("<.*?>", "")
+                .replace("✔ ", "")
+                .replace("✘ ", "")
+                .replace("A) ", "")
+                .replace("B) ", "")
+                .trim();
+    }
+
+    private String wrapHtml(String text) {
+        return "<html><body style='width:" + WRAP_WIDTH_PX + "px'>" + text + "</body></html>";
+    }
+
+    
+    
 }
